@@ -1,8 +1,7 @@
 {
     "jira-plugin.workingProject": "",
     "files.associations": {
-        "sdl.h": "c",
-        "sdl_main.h": "c",
-        "stdio.h": "c"
+        "*.h": "cpp",
+        "*.c": "cpp"
     }
 }

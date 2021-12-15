@@ -1,29 +1,24 @@
 #include <stdio.h>
-#include <unistd.h>
 #include "SDL2/SDL.h"
-#include "chip8.h"
-
-int main (int argc, char** argv){
+int main(int argc, char **argv)
+{
     SDL_Init(SDL_INIT_EVERYTHING);
-
-    SDL_Window* window = SDL_CreateWindow(
-        EMULATOR_WINDOW_TITLE, 
+    SDL_Window *window = SDL_CreateWindow(
+        "Chip8 Window",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        CHIP8_WIDTH * CHIP8_WINDOW_MULTIPLIER,
-        CHIP8_HEIGHT * CHIP8_WINDOW_MULTIPLIER,
-        SDL_WINDOW_SHOWN
+        640, 320, SDL_WINDOW_SHOWN
     );
-    printf("Hello World!\n");
 
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_TEXTUREACCESS_TARGET);
-
-    while(1){
-        sleep(1);
+    while(1)
+    {
         SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                goto OUT;
+        while(SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+            {
+                goto out;
             }
         }
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
@@ -32,13 +27,14 @@ int main (int argc, char** argv){
         SDL_Rect r;
         r.x = 0;
         r.y = 0;
-        r.w =  4 * CHIP8_WINDOW_MULTIPLIER;
-        r.h =  4 * CHIP8_WINDOW_MULTIPLIER;
+        r.w = 40;
+        r.h = 40;
         SDL_RenderFillRect(renderer, &r);
-        SDL_RenderPresent(renderer);        
+        SDL_RenderPresent(renderer);
+
     }
 
-OUT:
+out:
     SDL_DestroyWindow(window);
     return 0;
 }
