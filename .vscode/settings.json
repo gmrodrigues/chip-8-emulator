@@ -1,7 +1,9 @@
 {
-    "jira-plugin.workingProject": "",
     "files.associations": {
-        "*.h": "cpp",
-        "*.c": "cpp"
-    }
+        "assert.h": "c",
+        "chip8.h": "c",
+        "chip8keyboard.h": "c",
+        "stdbool.h": "c"
+    },
+    "jira-plugin.workingProject": ""
 }
