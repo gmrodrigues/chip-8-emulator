@@ -3,7 +3,8 @@
         "assert.h": "c",
         "chip8.h": "c",
         "chip8keyboard.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "stdlib.h": "c"
     },
     "jira-plugin.workingProject": ""
 }

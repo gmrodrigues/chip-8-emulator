@@ -11,7 +11,7 @@ clean:
 	rm build/* bin/*
 
 run: all
-	./bin/main
+	./bin/main ./assets/INVADERS
 
 dirs:
 	mkdir -p ./build ./bin
