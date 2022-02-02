@@ -11,7 +11,9 @@ clean:
 	rm build/* bin/*
 
 run: all
-	./bin/main ./assets/INVADERS
+#	./bin/main ./assets/INVADERS
+	./bin/main ./assets/pong.rom
+
 
 dirs:
 	mkdir -p ./build ./bin

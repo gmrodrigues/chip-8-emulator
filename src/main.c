@@ -6,9 +6,10 @@
 #include "chip8screen.h"
 
 const char keyboard_map[CHIP8_TOTAL_KEYS] = {
-    SDLK_0, SDLK_1, SDLK_2, SDLK_3, SDLK_4, SDLK_5,
-    SDLK_6, SDLK_7, SDLK_8, SDLK_9, SDLK_a, SDLK_b,
-    SDLK_c, SDLK_d, SDLK_e, SDLK_f};
+    SDLK_1, SDLK_2, SDLK_3, SDLK_4,
+    SDLK_q, SDLK_w, SDLK_e, SDLK_r,
+    SDLK_a, SDLK_s, SDLK_d, SDLK_f,
+    SDLK_z, SDLK_x, SDLK_c, SDLK_v};
 
 int main(int argc, char **argv)
 {
@@ -18,6 +19,7 @@ int main(int argc, char **argv)
         printf("You must provide a file to load\n");
         return -1;
     }
+
 
     const char *filename = argv[1];
     printf("The filename to load is: %s\n", filename);
@@ -58,6 +60,7 @@ int main(int argc, char **argv)
 
     while (1)
     {
+         usleep(1000);
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
@@ -114,13 +117,14 @@ int main(int argc, char **argv)
         SDL_RenderPresent(renderer);
         if (chip8.registers.delay_timer > 0)
         {
-            usleep(100);
+            usleep(1000);
             chip8.registers.delay_timer -= 1;
         }
 
         if (chip8.registers.sound_timer > 0)
         {
             // Beep(15000, 100 * chip8.registers.sound_timer);
+            usleep(100);
             chip8.registers.sound_timer = 0;
         }
 

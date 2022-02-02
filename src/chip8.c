@@ -31,7 +31,7 @@ void chip8_init(struct chip8 *chip8)
 
 void chip8_load(struct chip8 *chip8, const char *buf, size_t size)
 {
-    assert(size + CHIP8_CHARACTER_SET_LOAD_ADDRESS < CHIP8_MEMORY_SIZE);
+    assert(size + CHIP8_PROGRAM_LOAD_ADDRESS < CHIP8_MEMORY_SIZE);
     memcpy(&chip8->memory.memory[CHIP8_PROGRAM_LOAD_ADDRESS], buf, size);
     chip8->registers.PC = CHIP8_PROGRAM_LOAD_ADDRESS;
 }
@@ -156,7 +156,7 @@ static void chip8_exec_extended_F(struct chip8 *chip8, unsigned short opcode)
 
     // set I =  I +Vx
     case 0x1e:
-        chip8->registers.I = chip8->registers.V[x];
+        chip8->registers.I += chip8->registers.V[x];
         break;
 
     case 0x29:
