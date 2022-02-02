@@ -108,6 +108,7 @@ static void chip8_exec_extended_eight(struct chip8 *chip8, unsigned short opcode
 
 static char chip8_wait_for_key_press(struct chip8 *chip8)
 {
+    printf("wait for key press..\n");
     SDL_Event event;
     while (SDL_WaitEvent(&event))
     {
@@ -128,8 +129,7 @@ static char chip8_wait_for_key_press(struct chip8 *chip8)
 static void chip8_exec_extended_F(struct chip8 *chip8, unsigned short opcode)
 {
     unsigned char x = (opcode >> 8) & 0x000f;
-    unsigned char y = (opcode >> 4) & 0x000f;
-    switch (opcode && 0x00ff)
+    switch (opcode & 0x00ff)
     {
     case 0x07:
         chip8->registers.V[x] = chip8->registers.delay_timer;
@@ -141,6 +141,55 @@ static void chip8_exec_extended_F(struct chip8 *chip8, unsigned short opcode)
     {
         char pressed_key = chip8_wait_for_key_press(chip8);
         chip8->registers.V[x] = pressed_key;
+    }
+    break;
+
+    // delay timer
+    case 0x15:
+        chip8->registers.delay_timer = chip8->registers.V[x];
+        break;
+
+    // sound timer
+    case 0x18:
+        chip8->registers.sound_timer = chip8->registers.V[x];
+        break;
+
+    // set I =  I +Vx
+    case 0x1e:
+        chip8->registers.I = chip8->registers.V[x];
+        break;
+
+    case 0x29:
+        chip8->registers.I = chip8->registers.V[x] * CHIP8_DEFAULT_SPRITE_HEIGHT;
+        break;
+
+    // splits numbe and stoers as hundreds, tens and units and stoers from I, I+1 and I+2 memory positions
+    case 0x33:
+    {
+        unsigned char hundreds = chip8->registers.V[x] / 100;
+        unsigned char tens = (chip8->registers.V[x] / 10) % 10;
+        unsigned char units = chip8->registers.V[x] % 10;
+        chip8_memory_set(&chip8->memory, chip8->registers.I, hundreds);
+        chip8_memory_set(&chip8->memory, chip8->registers.I + 1, tens);
+        chip8_memory_set(&chip8->memory, chip8->registers.I + 2, units);
+    }
+    break;
+
+    case 0x55:
+    {
+        for (int i = 0; i <= x; i++)
+        {
+            chip8_memory_set(&chip8->memory, chip8->registers.I + i, chip8->registers.V[i]);
+        }
+    }
+    break;
+
+    case 0x65:
+    {
+        for (int i = 0; i <= x; i++)
+        {
+            chip8->registers.V[i] = chip8_memory_get(&chip8->memory, chip8->registers.I + i);
+        }
     }
     break;
 
@@ -156,6 +205,7 @@ static void chip8_exec_extended(struct chip8 *chip8, unsigned short opcode)
     unsigned char y = (opcode >> 4) & 0x000f;
     unsigned char kk = opcode & 0x00ff;
     unsigned char n = opcode & 0x000f;
+
     switch (opcode & 0xf000)
     {
 
@@ -267,6 +317,7 @@ static void chip8_exec_extended(struct chip8 *chip8, unsigned short opcode)
 
 void chip8_exec(struct chip8 *chip8, unsigned short opcode)
 {
+    printf("opcode %x\n", opcode);
     switch (opcode)
     {
     case 0x00E0: // CLS: clear the display

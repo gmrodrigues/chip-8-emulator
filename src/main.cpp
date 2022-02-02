@@ -2,5 +2,5 @@
 
 int main(){
 
-printf("\a beep");
+printf("\a beepmai");
 }

@@ -56,10 +56,6 @@ int main(int argc, char **argv)
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_TEXTUREACCESS_TARGET);
 
-    chip8.registers.V[0] = 0x00;
-    chip8_exec(&chip8, 0xF00A);
-    printf("v[0] == %x\n", chip8.registers.V[0]);
-
     while (1)
     {
         SDL_Event event;
